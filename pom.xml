@@ -14,7 +14,7 @@
     <name>movie-website</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.runtime.version>11</java.runtime.version>
+        <java.version>11</java.version>
     </properties>
     <dependencies>
         <dependency>
