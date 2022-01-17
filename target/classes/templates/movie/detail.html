@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Detail</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+        th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+          crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div class="container-fluid" style="margin-top: 20px">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="pannel-group">
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-3">
+                <h4><a href="#" th:href="@{'/movies/sortby/id/page/1'}" th:text=Movies style="color: #FFFFFF">Tasty Goodnees 3</a></h4>
+              </div>
+              <div class="col-md-3">
+                <h4><a href="#" th:href="@{'/actors/sortby/id/page/1'}" th:text=Actors style="color: #FFFFFF">Tasty Goodnees 3</a></h4>
+              </div>
+              <div class="col-md-3">
+                <h4><a href="#" th:href="@{'/countries'}" th:text="'By country'" style="color: #FFFFFF">Tasty Goodnees 3</a></h4>
+              </div>
+              <div class="col-md-3">
+                <h4><a href="#" th:href="@{'/categories'}" th:text="'By category'" style="color: #FFFFFF">Tasty Goodnees 3</a></h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-5">
+                <h4 th:text="${movie.title}">Movie Description Here!</h4>
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-default" href="#"
+                   th:href="@{'/movie/' + ${movie.id} + '/update'}" role="button">Update</a>
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-default" href="#"
+                   th:href="@{'/movie/' + ${movie.id} + '/delete'}" role="button">Delete</a>
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-default" href="#"
+                   th:href="@{'/movie/' + ${movie.id} + '/image'}" role="button">Change Poster</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-3">
+                <h5>Categories:</h5>
+              </div>
+              <div class="col-md-6">
+                <h5 th:text="${movie.getCategoryName()}">Fiction</h5>
+              </div>
+            </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <h5>Release Date:</h5>
+                </div>
+                <div class="col-md-3">
+                  <h5 th:text="${movie.releaseDate}">1900-01-01</h5>
+                </div>
+              </div>
+
+            <div class="row">
+              <div class="col-md-3">
+                <h5>Length:</h5>
+              </div>
+              <div class="col-md-3">
+                <h5 th:text="${(movie.length) != null} ? ${(movie.length) + ' min'}">30 min</h5>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3">
+                <h5>Rating:</h5>
+              </div>
+              <div class="col-md-3">
+                <h5 th:text="${movie.rating}">10.0</h5>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3">
+                <h5>Country:</h5>
+              </div>
+              <div class="col-md-3">
+                <h5 th:text="${movie.getCountryName()}">America</h5>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3">
+                <h5>Watching URL:</h5>
+              </div>
+              <div class="col-md-3" th:if="${!#strings.isEmpty(movie.url)}">
+                <h5><a th:href="${movie.url}">Watching online</a></h5>
+              </div>
+            </div>
+
+            <img style="position:relative;margin-left:525px;margin-top:-215px" src="../../static/images/default.jpg"
+                 th:src="@{'/movie/' + ${movie.id} + '/poster'}"
+                 width="150" height="225">
+          </div>
+          </div>
+        </div>
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h1 class="panel-title" >Actors</h1>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive" th:if="${not #lists.isEmpty(movie.actors)}">
+              <table class="table table-hover ">
+                <thead class="thead-inverse">
+                <tr>
+                  <th>Photo</th>
+                  <th>Name</th>
+                  <th>Gender</th>
+                  <th>Country</th>
+                </tr>
+                </thead>
+                <tr th:each="actor : ${movie.actors}">
+                  <td><img src="../../static/images/soul.jpg"
+                           th:src="@{'/actor/' + ${actor.id} + '/photo'}"
+                           width="50" height="75"></td>
+                  <td><a href="#" th:href="@{'/actor/' + ${actor.id} + '/display'}" th:text="${actor.name}">Tasty Goodnees 3</a></td>
+                  <td th:text="${actor.gender?.toString()}">10.0</td>
+                  <td th:text="${actor.country?.name}">100 min</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h1 class="panel-title" >Synopsis</h1>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-12">
+                <p th:text="${movie.description}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h1 class="panel-title" >Review</h1>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-12">
+                <p th:text="${movie.review}">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

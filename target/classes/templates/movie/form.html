@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Movie Form</title>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+        th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+  <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+          crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
+<div class="container-fluid" style="margin-top: 20px">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <form  th:object="${movie}" th:action="@{/movie/}"  method="post">
+
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+          <p>Please Correct Errors Below</p>
+        </div>
+
+        <input type="hidden" th:field="*{id}"/>
+        <div class="pannel-group">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h1 class="panel-title">Edit Movie Information</h1>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3 form-group" th:class="${#fields.hasErrors('title')}
+                ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
+                  <label>Title:</label>
+                  <input type="text" class="form-control" th:field="*{title}" th:errorclass="has-error"/>
+                  <span class="help-block" th:if="${#fields.hasErrors('title')}">
+                    <ul>
+                      <li th:each="err : ${#fields.errors('title')}" th:text="${err}"/>
+                    </ul>
+                  </span>
+                </div>
+                <div class="col-md-3 form-group" th:class="${#fields.hasErrors('length')}
+                ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
+                  <label>Length:</label>
+                  <input type="number" class="form-control" th:field="*{length}" th:errorclass="has-error"/>
+                  <span class="help-block" th:if="${#fields.hasErrors('length')}">
+                    <ul>
+                      <li th:each="err : ${#fields.errors('length')}" th:text="${err}"/>
+                    </ul>
+                  </span>
+                </div>
+                <div class="col-md-3 form-group">
+                  <label>Categories:</label>
+                  <select th:field="*{categories}" class="form-control" multiple>
+                    <option th:each="category : ${allCategories}"
+                            th:value="${category.id}"
+                            th:text="${category.name}"
+                            th:selected="${movie.categories.contains(category)}">
+                      >val</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <a href="#" th:href="@{'/category/add'}" th:text="'Add Category'">Tasty Goodnees 3</a>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3 form-group" th:class="${#fields.hasErrors('rating')}
+                ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
+                  <label>Rating:</label>
+                  <input type="text" class="form-control" th:field="*{rating}"/>
+                  <span class="help-block" th:if="${#fields.hasErrors('rating')}">
+                    <ul>
+                      <li th:each="err : ${#fields.errors('rating')}" th:text="${err}"/>
+                    </ul>
+                  </span>
+                </div>
+                <div class="col-md-3 form-group">
+                  <label>Release Date:</label>
+                  <input type="date" class="form-control" th:field="*{releaseDate}"/>
+                </div>
+                <div class="col-md-3 form-group">
+                  <label>Country:</label>
+                  <select th:field="*{countries}" class="form-control" multiple>
+                    <option th:each="country : ${allCountries}"
+                            th:value="${country.id}"
+                            th:text="${country.name}"
+                            th:selected="${movie.countries.contains(country)}">
+                      >val</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <a href="#" th:href="@{'/country/add'}" th:text="'Add Country'">Tasty Goodnees 3</a>
+                </div>
+              </div>
+
+              <div class="row">
+                <div th:class="${#fields.hasErrors('url')}
+                ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
+                  <label>Watching URL:</label>
+                  <input type="text" class="form-control" th:field="*{url}"/>
+                  <span class="help-block" th:if="${#fields.hasErrors('url')}">
+                    <ul>
+                      <li th:each="err : ${#fields.errors('url')}" th:text="${err}"/>
+                    </ul>
+                  </span>
+                </div>
+
+            </div>
+          </div>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <div class="row">
+                <div class="col-md-10">
+                  <h1 class="panel-title">Actors</h1>
+                </div>
+                <div class="col-md-2">
+                  <a class="btn btn-default" href="#" th:href="@{'/actor/add'}" role="button">Add Actor</a>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <select th:field="*{actors}" class="form-control" multiple>
+                    <option th:each="actor : ${allActors}"
+                            th:value="${actor.id}"
+                            th:text="${actor.name}"
+                            th:selected="${movie.actors.contains(actor)}">
+                      >val</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h1 class="panel-title">Synopsis</h1>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12 form-group">
+                  <textarea class="form-control" rows="3" th:field="*{description}"></textarea></div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h1 class="panel-title">Review</h1>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12 form-group">
+                  <textarea class="form-control" rows="3" th:field="*{review}"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>
