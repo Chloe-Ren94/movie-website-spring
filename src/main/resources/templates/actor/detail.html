@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Movie Detail</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+        th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+  <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+          crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div class="container-fluid" style="margin-top: 20px">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="pannel-group">
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-3">
+                <h4><a href="#" th:href="@{'/movies/sortby/id/page/1'}" th:text=Movies style="color: #FFFFFF">Tasty Goodnees 3</a></h4>
+              </div>
+              <div class="col-md-3">
+                <h4><a href="#" th:href="@{'/actors/sortby/id/page/1'}" th:text=Actors style="color: #FFFFFF">Tasty Goodnees 3</a></h4>
+              </div>
+              <div class="col-md-3">
+                <h4><a href="#" th:href="@{'/countries'}" th:text="'By country'" style="color: #FFFFFF">Tasty Goodnees 3</a></h4>
+              </div>
+              <div class="col-md-3">
+                <h4><a href="#" th:href="@{'/categories'}" th:text="'By category'" style="color: #FFFFFF">Tasty Goodnees 3</a></h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-5">
+                <h4 th:text="${actor.name}">Actor</h4>
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-default" href="#"
+                   th:href="@{'/actor/' + ${actor.id} + '/update'}" role="button">Update</a>
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-default" href="#"
+                   th:href="@{'/actor/' + ${actor.id} + '/delete'}" role="button">Delete</a>
+              </div>
+              <div class="col-md-2">
+                <a class="btn btn-default" href="#"
+                   th:href="@{'/actor/' + ${actor.id} + '/image'}" role="button">Change Image</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-3">
+                <h5>Gender:</h5>
+              </div>
+              <div class="col-md-3">
+                <h5 th:text="${actor.gender?.toString()}">Female</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <h5>Birthdate:</h5>
+              </div>
+              <div class="col-md-3">
+                <h5 th:text="${actor.birthDate}">1900-01-01</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <h5>Nationality:</h5>
+              </div>
+              <div class="col-md-3">
+                <h5 th:text="${actor.country?.name}">Japan</h5>
+              </div>
+            </div>
+
+            <div class="row"><h1></h1></div>
+            <div class="row"><h1></h1></div>
+            <div class="row"><h1></h1></div>
+            <div class="row"><h1></h1></div>
+            <div class="row"><h1></h1></div>
+
+            <img style="position:absolute;margin-left:525px;margin-top:-215px" src="../../static/images/soul.jpg"
+                 th:src="@{'/actor/' + ${actor.id} + '/photo'}"
+                 width="150" height="225">
+          </div>
+        </div>
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h1 class="panel-title" >Movies</h1>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive" th:if="${not #lists.isEmpty(actor.movies)}">
+              <table class="table table-hover ">
+                <thead class="thead-inverse">
+                <tr>
+                  <th>Poster</th>
+                  <th>Title</th>
+                  <th>Rating</th>
+                  <th>Length</th>
+                </tr>
+                </thead>
+                <tr th:each="movie : ${actor.movies}">
+                  <td><img src="../../static/images/soul.jpg"
+                           th:src="@{'/movie/' + ${movie.id} + '/poster'}"
+                           width="50" height="75"></td>
+                  <td><a href="#" th:href="@{'/movie/' + ${movie.id} + '/display'}" th:text="${movie.title}">Tasty Goodnees 3</a></td>
+                  <td th:text="${movie.rating}">10.0</td>
+                  <td th:text="${(movie.length) != null} ? ${(movie.length) + ' min'}">100 min</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
